@@ -35,8 +35,12 @@ export async function POST(req: NextRequest) {
       uid: callerUid,
       ttlSeconds: 3600,
     });
-  } catch (e: any) {
-    return withCors({ error: e?.message || "Internal error" }, { status: 500 });
+  } catch (e: unknown) {
+    const message =
+      e instanceof Error ? e.message : "Internal error";
+
+    return withCors({ error: message }, { status: 500 });
   }
+
 }
 

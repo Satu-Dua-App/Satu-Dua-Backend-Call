@@ -7,7 +7,7 @@ export const corsHeaders = {
   "content-type": "application/json",
 };
 
-export function withCors(json: any, init?: ResponseInit) {
+export function withCors(json: unknown, init?: ResponseInit) {
   return new Response(JSON.stringify(json), {
     ...init,
     headers: { ...corsHeaders, ...(init?.headers || {}) },
