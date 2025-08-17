@@ -19,7 +19,13 @@ export async function deleteCall(channelName: string): Promise<void> {
 export async function listCalls(status?: CallStatus, maxAgeMs?: number): Promise<CallRecord[]> {
   const all = await redis.hgetall(CALLS_KEY) as Record<string, string> | null;
   const now = Date.now();
-  const items = Object.values(all || {}).map((raw) => JSON.parse(raw) as CallRecord);
+  const items = Object.values(all || {}).map((raw) => {
+    if (typeof raw === "string") {
+      return JSON.parse(raw) as CallRecord;
+    }
+    return raw as unknown as CallRecord; // already parsed object
+  });
+
 
   return items.filter((c) => {
     const statusOk = status ? c.status === status : true;
