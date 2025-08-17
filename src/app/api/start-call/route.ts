@@ -20,6 +20,7 @@ export async function POST(req: NextRequest) {
 
     const record: CallRecord = {
       channelName,
+      token,
       status: "waiting",
       createdAt: now,
       lastHeartbeatAt: now,
