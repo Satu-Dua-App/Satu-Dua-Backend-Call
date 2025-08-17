@@ -9,7 +9,27 @@ export async function putCall(call: CallRecord): Promise<void> {
 
 export async function getCall(channelName: string): Promise<CallRecord | null> {
   const raw = await redis.hget(CALLS_KEY, channelName) as string | null;
-  return raw ? (JSON.parse(raw) as CallRecord) : null;
+  console.debug(`getCall(${channelName})`, raw);
+
+  if (!raw) return null;
+
+  // Handle case where raw is already an object (shouldn't happen but does)
+  if (typeof raw === 'object') {
+    return raw as CallRecord;
+  }
+
+  // Handle case where raw is a string that looks like "[object Object]"
+  if (raw === "[object Object]") {
+    console.error(`Invalid data stored in Redis for channel ${channelName}: ${raw}`);
+    return null;
+  }
+
+  try {
+    return JSON.parse(raw) as CallRecord;
+  } catch (error) {
+    console.error(`Failed to parse call data for channel ${channelName}:`, error);
+    return null;
+  }
 }
 
 export async function deleteCall(channelName: string): Promise<void> {

@@ -4,7 +4,7 @@ import { listCalls } from "@/lib/calls";
 import { requireOperatorAuth } from "@/lib/auth";
 
 export const runtime = "nodejs";
-const STALE_MS = 2 * 60 * 1000; // hide calls with no heartbeat for 2 minutes
+const STALE_MS = 30 * 60 * 1000; // hide calls with no heartbeat for 2 minutes
 
 export async function OPTIONS() { return ok(); }
 
