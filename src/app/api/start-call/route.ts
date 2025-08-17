@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json().catch(() => ({}));
     // Optional: accept a custom channelName from client; otherwise generate one.
-    const channelName = body?.channelName || `call-${uuid()}`;
+    const channelName = body?.channelName || uuid();
     const callerUid = 0; // you can randomize if you prefer
     const token = buildRtcToken(channelName, callerUid, 3600);
     const now = Date.now();
