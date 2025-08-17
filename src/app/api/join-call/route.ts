@@ -1,6 +1,5 @@
 import { NextRequest } from "next/server";
 import { withCors, ok } from "@/lib/cors";
-import { buildRtcToken } from "@/lib/token";
 import { getCall, updateCall } from "@/lib/calls";
 import { requireOperatorAuth } from "@/lib/auth";
 
@@ -22,7 +21,7 @@ export async function POST(req: NextRequest) {
   if (!call) return withCors({ error: "Call not found" }, { status: 404 });
   if (call.status === "ended") return withCors({ error: "Call already ended" }, { status: 409 });
 
-  const token = buildRtcToken(channelName, operatorUid, 3600);
+  const token = call.token
 
   await updateCall(channelName, { status: "in-progress", operatorUid });
 
