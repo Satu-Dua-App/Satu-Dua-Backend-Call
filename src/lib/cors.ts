@@ -15,6 +15,9 @@ export function withCors(json: unknown, init?: ResponseInit) {
 }
 
 export function ok() {
-  return new Response(null, { status: 204, headers: corsHeaders });
+  return new Response(null, {
+    status: 200,
+    headers: corsHeaders,
+  });
 }
 
